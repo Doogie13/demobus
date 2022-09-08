@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Doogie13:demobus:1.0'
+    implementation 'com.github.doogie13:demobus:-SNAPSHOT'
 }
 ```
 More information for other build tools can be found [here](https://jitpack.io/).
