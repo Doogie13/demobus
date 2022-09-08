@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  */
 public class DemoBus {
 
-    private final CloneableHashSet<ListenableObjectContainer> listenableMap = new CloneableHashSet<>();
+    private final Set<ListenableObjectContainer> listenableMap = new HashSet<>();
     private static Consumer<Throwable> crashHandler = t -> {throw new RuntimeException(t);};
 
     /**
@@ -77,22 +77,11 @@ public class DemoBus {
      * */
     public boolean call(DemoVent demoVent) {
 
-        for (ListenableObjectContainer entry : listenableMap.clone())
+        for (ListenableObjectContainer entry : new HashSet<>(listenableMap))
             entry.call(demoVent);
 
         return demoVent.isCancelled();
 
-    }
-
-    /**
-     * A HashSet which may be cloned
-     * */
-    static class CloneableHashSet<K> extends HashSet<K> {
-        @Override
-        @SuppressWarnings("unchecked")
-        public CloneableHashSet<K> clone() {
-            return (CloneableHashSet<K>) super.clone();
-        }
     }
 
     public static void crash(Throwable t) {

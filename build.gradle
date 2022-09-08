@@ -10,8 +10,6 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = targetCompatibility = 1.8
-
 configurations {
     implementation.extendsFrom include
 }
@@ -28,6 +26,10 @@ javadoc {
 
 dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+}
+
+jar {
+    exclude('LICENSE*')
 }
 
 publishing {
