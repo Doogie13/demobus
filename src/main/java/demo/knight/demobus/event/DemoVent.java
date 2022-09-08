@@ -1,5 +1,8 @@
 package demo.knight.demobus.event;
 
+import demo.knight.demobus.DemoBus;
+import demo.knight.demobus.exception.CancellationException;
+
 /**
  * A class for an event. You may extend this to create your own events.
  * @author Doogie13
@@ -23,7 +26,7 @@ public class DemoVent {
     public void setCancelled(boolean cancelled) {
 
         if (!isCancellable())
-            throw new RuntimeException("Attempted to cancel an uncancellable event!");
+            DemoBus.crash(new CancellationException("Attempted to cancel an un-cancellable event!"));
 
         isCancelled = cancelled;
 

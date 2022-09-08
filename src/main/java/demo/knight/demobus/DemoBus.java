@@ -4,6 +4,7 @@ import demo.knight.demobus.event.DemoVent;
 import demo.knight.demobus.listener.ListenableObjectContainer;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * An event bus created in Java for JVM languages
@@ -13,6 +14,20 @@ import java.util.*;
 public class DemoBus {
 
     private final CloneableHashSet<ListenableObjectContainer> listenableMap = new CloneableHashSet<>();
+    private static Consumer<Throwable> crashHandler = t -> {throw new RuntimeException(t);};
+
+    /**
+     * Creates a new DemoBus instance with no crash handling
+     * */
+    public DemoBus() {
+    }
+
+    /**
+     * Creates a new DemoBus instance with custom crash handling
+     * */
+    public DemoBus(Consumer<Throwable> crashHandler) {
+        DemoBus.crashHandler = crashHandler;
+    }
 
     /**
      * Registers an object, allows it to listen
@@ -34,7 +49,7 @@ public class DemoBus {
 
         } catch (IllegalAccessException illegalAccessException) {
 
-            throw new RuntimeException(illegalAccessException);
+            crash(illegalAccessException);
 
         }
 
@@ -78,6 +93,10 @@ public class DemoBus {
         public CloneableHashSet<K> clone() {
             return (CloneableHashSet<K>) super.clone();
         }
+    }
+
+    public static void crash(Throwable t) {
+        crashHandler.accept(t);
     }
 
 }

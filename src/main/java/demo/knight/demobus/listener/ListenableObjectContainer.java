@@ -1,7 +1,9 @@
 package demo.knight.demobus.listener;
 
+import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoVent;
 import demo.knight.demobus.event.DemoListen;
+import demo.knight.demobus.exception.InvalidListenerException;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;
@@ -25,12 +27,14 @@ public class ListenableObjectContainer {
         this.object = object;
 
         for (Method method : object.getClass().getMethods()) {
-            if (method.isAnnotationPresent(DemoListen.class) && method.getParameterTypes().length == 1) {
+            if (method.isAnnotationPresent(DemoListen.class))
+                if (method.getParameterTypes().length == 1) {
 
-                DemoListen annotation = method.getAnnotation(DemoListen.class);
-                listeners.add(new Listener(object, method, annotation.receiveCancelled(), annotation.priority()));
+                    DemoListen annotation = method.getAnnotation(DemoListen.class);
+                    listeners.add(new Listener(object, method, annotation.receiveCancelled(), annotation.priority()));
 
-            }
+                } else
+                    DemoBus.crash(new InvalidListenerException("Invalid annotated Listener!"));
 
         }
 

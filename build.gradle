@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group 'demo.knight'
@@ -9,12 +10,32 @@ repositories {
     mavenCentral()
 }
 
+sourceCompatibility = targetCompatibility = 1.8
+
 configurations {
     implementation.extendsFrom include
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
 dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
 
 test {

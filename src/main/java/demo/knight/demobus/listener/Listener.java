@@ -1,7 +1,9 @@
 package demo.knight.demobus.listener;
 
+import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoListen;
 import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.exception.EventInvocationException;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -85,7 +87,7 @@ public class Listener {
 
         } catch (Throwable t) {
 
-            throw new RuntimeException(t);
+            DemoBus.crash(new EventInvocationException(t));
 
         }
 
