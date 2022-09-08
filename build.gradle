@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'demo.knight'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    implementation.extendsFrom include
+}
+
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
