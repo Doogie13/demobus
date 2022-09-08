@@ -79,11 +79,7 @@ public class Listener {
 
         try {
 
-            Object parent = this.parent;
-            if (parent == null)
-                method.invoke(event);
-            else
-                method.invoke(parent, event);
+            method.invoke(parent, event);
 
         } catch (Throwable t) {
 
