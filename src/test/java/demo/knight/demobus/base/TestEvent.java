@@ -1,4 +1,4 @@
-package demo.knight.demobus;
+package demo.knight.demobus.base;
 
 import demo.knight.demobus.event.DemoVent;
 

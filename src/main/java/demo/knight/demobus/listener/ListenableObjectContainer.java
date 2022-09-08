@@ -6,8 +6,7 @@ import demo.knight.demobus.event.DemoListen;
 import demo.knight.demobus.exception.InvalidListenerException;
 
 import java.lang.reflect.Method;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * An entry containing a list of all listeners in a class or object along with whether the listener is currently listening.
@@ -18,7 +17,7 @@ public class ListenableObjectContainer {
 
     public boolean listening = true;
     private final Object object;
-    private final TreeSet<Listener> listeners = new TreeSet<>(Comparator.comparingInt(o -> o.getPriority().ordinal()));
+    private final List<Listener> listeners = new ArrayList<>();
 
     /**
      * @param object the object or class to call listeners within.
@@ -26,17 +25,24 @@ public class ListenableObjectContainer {
     public ListenableObjectContainer(Object object) throws IllegalAccessException {
         this.object = object;
 
+        int i = 0;
         for (Method method : object.getClass().getMethods()) {
-            if (method.isAnnotationPresent(DemoListen.class))
+            if (method.isAnnotationPresent(DemoListen.class)) {
+                i++;
                 if (method.getParameterTypes().length == 1) {
 
                     DemoListen annotation = method.getAnnotation(DemoListen.class);
                     listeners.add(new Listener(object, method, annotation.receiveCancelled(), annotation.priority()));
 
+
                 } else
                     DemoBus.crash(new InvalidListenerException("Invalid annotated Listener!"));
+            }
 
         }
+
+        listeners.sort(Comparator.comparingInt(o -> o.getPriority().ordinal()));
+        System.out.println(i + " " + Arrays.toString(listeners.toArray(new Listener[]{})));
 
     }
 
