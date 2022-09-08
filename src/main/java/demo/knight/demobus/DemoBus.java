@@ -4,6 +4,7 @@ import demo.knight.demobus.event.DemoVent;
 import demo.knight.demobus.listener.ListenableObjectContainer;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Consumer;
 
 /**
@@ -13,7 +14,8 @@ import java.util.function.Consumer;
  */
 public class DemoBus {
 
-    private final Set<ListenableObjectContainer> listenableMap = new HashSet<>();
+    // lol
+    private final Set<ListenableObjectContainer> listenableMap = new CopyOnWriteArraySet<>();
     private static Consumer<Throwable> crashHandler = t -> {throw new RuntimeException(t);};
 
     /**
@@ -77,7 +79,7 @@ public class DemoBus {
      * */
     public boolean call(DemoVent demoVent) {
 
-        for (ListenableObjectContainer entry : new HashSet<>(listenableMap))
+        for (ListenableObjectContainer entry : listenableMap)
             entry.call(demoVent);
 
         return demoVent.isCancelled();
