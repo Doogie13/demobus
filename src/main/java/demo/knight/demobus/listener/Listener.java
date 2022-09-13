@@ -83,7 +83,7 @@ public class Listener {
 
         } catch (Throwable t) {
 
-            DemoBus.crash(new EventInvocationException(t));
+            DemoBus.crash(new EventInvocationException(parent, t));
 
         }
 
