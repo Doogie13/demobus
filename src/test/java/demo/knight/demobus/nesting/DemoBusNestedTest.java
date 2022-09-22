@@ -2,7 +2,7 @@ package demo.knight.demobus.nesting;
 
 import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoListen;
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -22,7 +22,7 @@ public class DemoBusNestedTest {
     }
 
     @DemoListen
-    public void listen(DemoVent vent) {
+    public void listen(IDemoVent vent) {
         System.out.println("DemoVent received!");
     }
 

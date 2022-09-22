@@ -2,7 +2,8 @@ package demo.knight.demobus.base;
 
 import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoListen;
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -49,7 +50,7 @@ public class DemoBusTest {
     }
 
     @DemoListen(priority = DemoListen.Priority.HIGH)
-    public void onAnyEvent(DemoVent event) {
+    public void onAnyEvent(IDemoVent event) {
 
         System.out.println("This listener will be called for every event. You can still determine the event class with the instanceof token.");
 

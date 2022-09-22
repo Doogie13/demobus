@@ -2,14 +2,14 @@ package demo.knight.demobus.listener;
 
 import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoListen;
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 import demo.knight.demobus.exception.EventInvocationException;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * An interface for listeners to use. This allows the event bus to work regardless of listener type.
@@ -42,30 +42,18 @@ public class Listener {
         if (parameterTypes.length != 1)
             throw new RuntimeException("Parameter type length is not 1");
 
-        Set<Class<?>> superTypes = new HashSet<>();
-        Class<?> cls = parameterTypes[0];
-
-        // get all superclasses
-        superTypes.add(cls);
-        while (cls != DemoVent.class) {
-            try {
-                cls = cls.getSuperclass();
-                superTypes.add(cls);
-            } catch (NullPointerException e) {
-                break;
-            }
-        }
+        boolean hasIDemoVent = IDemoVent.class.isAssignableFrom(methodType);
 
         // check to see that this is listening for DemoVents
-        if (!superTypes.contains(DemoVent.class))
-            throw new RuntimeException(String.format("Subscribed method not assignable from a DemoVent. Stop subscribing method in %s to %s.", method.getDeclaringClass().getName(), parameterTypes[0].getName()));
+        if (!hasIDemoVent)
+            throw new RuntimeException(String.format("Subscribed method not assignable from an IDemoVent. Stop subscribing method in %s to %s.", method.getDeclaringClass().getName(), parameterTypes[0].getName()));
 
     }
 
     /**
      * Calls the event, only if the event we are calling corresponds to what we are listening for
      * */
-    public void handleCall(DemoVent event) {
+    public void handleCall(IDemoVent event) {
 
         if (!(event.isCancelled() && !listenToCancelled) && methodType.isAssignableFrom(event.getClass()))
             call(event);
@@ -75,7 +63,7 @@ public class Listener {
     /**
      * Invokes the listener
      * */
-    void call(DemoVent event) {
+    void call(IDemoVent event) {
 
         try {
 

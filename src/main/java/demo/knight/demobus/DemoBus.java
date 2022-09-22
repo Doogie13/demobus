@@ -1,6 +1,6 @@
 package demo.knight.demobus;
 
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 import demo.knight.demobus.listener.ListenableObjectContainer;
 
 import java.util.*;
@@ -77,7 +77,7 @@ public class DemoBus {
      * Calls an event to be passed to listening methods
      * @param demoVent DemoVent object to be passed
      * */
-    public boolean call(DemoVent demoVent) {
+    public boolean call(IDemoVent demoVent) {
 
         for (ListenableObjectContainer entry : listenableMap)
             entry.call(demoVent);

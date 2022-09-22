@@ -1,7 +1,7 @@
 # DemoBus
 ###### An event bus written in java for the JVM
 
-# Adding to your project
+## Adding to your project
 to add DemoBus to your own Gradle project, add the following to your build.gradle
 ```groovy
 repositories {
@@ -14,12 +14,12 @@ dependencies {
 ```
 More information for other build tools can be found [here](https://jitpack.io/).
 
-# Usage
+## Usage
 
-## Creating a DemoBus
-To implement DemoBus, there are 2 constructors you can use.
+### Creating a DemoBus
+To implement DemoBus, there are 2 constructors you may use.
 
-This first constructor will create a new DemoBus instance with no crash handling. A RuntimeException holding any exceptions thrown will be thrown.
+This first constructor will create a new DemoBus instance with no crash handling. A RuntimeException will be thrown for any exceptions and errors.
 
 ```java
 public static final DemoBus EVENT_BUS = new DemoBus();
@@ -31,25 +31,24 @@ This second constructor allows you to handle exceptions without crashing.
 public static final DemoBus EVENT_BUS = new DemoBus(t -> SomeLogger::error);
 ```
 
-## Creating an event
-Events are created by extending the DemoVent class.
+### Creating an event
+To create an event, create a class which implements IDemoVent.
 ```java
 
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 
-public class ExampleEvent extends DemoVent {
+public class Event implements IDemoVent {
 
     @Override
-    public boolean isCancellable() {
+    public boolean isCancelled() {
         return false;
     }
-    
+
 }
 ```
-Overriding isCancellable will allow you to prevent cancellation of an event. Events are cancellable by default.
 
-## Listening to events
-To listen to events, you must first register their parent object. To listen to events, create a method annotated @DemoListen with one parameter. This parameter must be for `<? extends DemoVent>`.
+### Listening to events
+To listen to events, you must first register their parent object. To listen to events, create a method annotated @DemoListen with only one parameter. This parameter must be for a valid event.
 
 ```java
 import demo.knight.demobus.event.*;
@@ -61,26 +60,38 @@ public class Listening {
     }
 
     @DemoListen
-    public void onDemoVent(DemoVent event) {
+    public void onDemoVent(IDemoVent event) {
 
-        // This will receive all objects extending DemoVent
+        // This will receive all events
 
     }
 
     @DemoListen
     public void onDemoVent(CustomEvent event) {
 
-        // This will only receive only objects extending CustomEvent
+        // This will only receive only CustomEvents
         if (event.isCancellable())
             event.cancel();
 
     }
 
-    static class CustomEvent extends DemoVent {
-        
-        // This is a class extending DemoVent. You will likely wish to add your own variables here which can be modified by listeners
+    // this is the format one would expect a typical base event to follow
+    static class CustomEvent implements IDemoVent {
+
+        private boolean isCancelled = false;
+
+        @Override
+        public void isCancelled() {
+            return cancellable;
+        }
+
+        public void setCancelled(boolean cancelled) {
+            isCancelled = cancelled;
+        }
         
     }
 
 }
 ```
+
+It is recommended that you create a base event and have other events extending that, rather than each event implementing IDemoVent
