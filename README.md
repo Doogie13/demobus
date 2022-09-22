@@ -35,7 +35,7 @@ public static final DemoBus EVENT_BUS = new DemoBus(t -> SomeLogger::error);
 Events are created by extending the DemoVent class.
 ```java
 
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 
 public class ExampleEvent extends DemoVent {
 

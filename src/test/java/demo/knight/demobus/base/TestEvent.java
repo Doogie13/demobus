@@ -1,6 +1,7 @@
 package demo.knight.demobus.base;
 
 import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 
 /**
  * A test event with a manipulatable String

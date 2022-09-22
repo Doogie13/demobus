@@ -1,7 +1,7 @@
 package demo.knight.demobus.listener;
 
 import demo.knight.demobus.DemoBus;
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 import demo.knight.demobus.event.DemoListen;
 import demo.knight.demobus.exception.InvalidListenerException;
 
@@ -56,7 +56,7 @@ public class ListenableObjectContainer {
     /**
      * Calls an event to all listeners if we are listening.
      * */
-    public void call(DemoVent object) {
+    public void call(IDemoVent object) {
 
         if (listening)
             for (Listener l : listeners)

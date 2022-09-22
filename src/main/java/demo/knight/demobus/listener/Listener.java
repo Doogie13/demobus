@@ -2,7 +2,7 @@ package demo.knight.demobus.listener;
 
 import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoListen;
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.event.IDemoVent;
 import demo.knight.demobus.exception.EventInvocationException;
 
 import java.lang.invoke.MethodHandle;
@@ -47,7 +47,7 @@ public class Listener {
 
         // get all superclasses
         superTypes.add(cls);
-        while (cls != DemoVent.class) {
+        while (cls != IDemoVent.class) {
             try {
                 cls = cls.getSuperclass();
                 superTypes.add(cls);
@@ -57,7 +57,7 @@ public class Listener {
         }
 
         // check to see that this is listening for DemoVents
-        if (!superTypes.contains(DemoVent.class))
+        if (!superTypes.contains(IDemoVent.class))
             throw new RuntimeException(String.format("Subscribed method not assignable from a DemoVent. Stop subscribing method in %s to %s.", method.getDeclaringClass().getName(), parameterTypes[0].getName()));
 
     }
@@ -65,7 +65,7 @@ public class Listener {
     /**
      * Calls the event, only if the event we are calling corresponds to what we are listening for
      * */
-    public void handleCall(DemoVent event) {
+    public void handleCall(IDemoVent event) {
 
         if (!(event.isCancelled() && !listenToCancelled) && methodType.isAssignableFrom(event.getClass()))
             call(event);
@@ -75,7 +75,7 @@ public class Listener {
     /**
      * Invokes the listener
      * */
-    void call(DemoVent event) {
+    void call(IDemoVent event) {
 
         try {
 
