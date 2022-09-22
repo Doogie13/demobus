@@ -1,10 +1,10 @@
-package demo.knight.demobus.event;
+package demo.knight.demobus;
 
-import demo.knight.demobus.DemoBus;
+import demo.knight.demobus.event.IDemoVent;
 import demo.knight.demobus.exception.CancellationException;
 
 /**
- * A basic class for an event. You may extend this to create your own events.
+ * A basic class for an event.
  * @author Doogie13
  * @since 06/09/2022
  */

@@ -2,7 +2,7 @@ package demo.knight.demobus.base;
 
 import demo.knight.demobus.DemoBus;
 import demo.knight.demobus.event.DemoListen;
-import demo.knight.demobus.event.DemoVent;
+import demo.knight.demobus.DemoVent;
 import demo.knight.demobus.event.IDemoVent;
 import org.junit.jupiter.api.Test;
 

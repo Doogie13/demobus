@@ -1,7 +1,6 @@
 package demo.knight.demobus.nesting;
 
-import demo.knight.demobus.event.DemoVent;
-import demo.knight.demobus.event.IDemoVent;
+import demo.knight.demobus.DemoVent;
 
 /**
  * @author Doogie13

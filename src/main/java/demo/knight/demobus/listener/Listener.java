@@ -8,8 +8,8 @@ import demo.knight.demobus.exception.EventInvocationException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * An interface for listeners to use. This allows the event bus to work regardless of listener type.
@@ -42,23 +42,11 @@ public class Listener {
         if (parameterTypes.length != 1)
             throw new RuntimeException("Parameter type length is not 1");
 
-        Set<Class<?>> superTypes = new HashSet<>();
-        Class<?> cls = parameterTypes[0];
-
-        // get all superclasses
-        superTypes.add(cls);
-        while (cls != IDemoVent.class) {
-            try {
-                cls = cls.getSuperclass();
-                superTypes.add(cls);
-            } catch (NullPointerException e) {
-                break;
-            }
-        }
+        boolean hasIDemoVent = IDemoVent.class.isAssignableFrom(methodType);
 
         // check to see that this is listening for DemoVents
-        if (!superTypes.contains(IDemoVent.class))
-            throw new RuntimeException(String.format("Subscribed method not assignable from a DemoVent. Stop subscribing method in %s to %s.", method.getDeclaringClass().getName(), parameterTypes[0].getName()));
+        if (!hasIDemoVent)
+            throw new RuntimeException(String.format("Subscribed method not assignable from an IDemoVent. Stop subscribing method in %s to %s.", method.getDeclaringClass().getName(), parameterTypes[0].getName()));
 
     }
 
