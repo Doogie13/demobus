@@ -74,6 +74,15 @@ public class DemoBus {
     }
 
     /**
+     * Unregisters an object and deletes it from the listener cache
+     * */
+    public void destroy(Object object) {
+
+        listenableMap.removeIf(entry -> entry.getObject().equals(object));
+
+    }
+
+    /**
      * Calls an event to be passed to listening methods
      * @param demoVent DemoVent object to be passed
      * */
@@ -90,4 +99,10 @@ public class DemoBus {
         crashHandler.accept(t);
     }
 
+    @Override
+    public String toString() {
+        return "DemoBus{" +
+                "listenableMap=" + listenableMap +
+                '}';
+    }
 }

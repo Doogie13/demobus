@@ -25,24 +25,23 @@ public class ListenableObjectContainer {
     public ListenableObjectContainer(Object object) throws IllegalAccessException {
         this.object = object;
 
-        int i = 0;
         for (Method method : object.getClass().getMethods()) {
+
             if (method.isAnnotationPresent(DemoListen.class)) {
-                i++;
+
                 if (method.getParameterTypes().length == 1) {
 
                     DemoListen annotation = method.getAnnotation(DemoListen.class);
                     listeners.add(new Listener(object, method, annotation.receiveCancelled(), annotation.priority()));
 
-
                 } else
                     DemoBus.crash(new InvalidListenerException("Invalid annotated Listener!"));
+
             }
 
         }
 
         listeners.sort(Comparator.comparingInt(o -> o.getPriority().ordinal()));
-        System.out.println(i + " " + Arrays.toString(listeners.toArray(new Listener[]{})));
 
     }
 
@@ -64,4 +63,12 @@ public class ListenableObjectContainer {
 
     }
 
+    @Override
+    public String toString() {
+        return "ListenableObjectContainer{" +
+                "listening=" + listening +
+                ", object=" + object.getClass().getSimpleName() +
+                ", listeners=" + listeners +
+                '}';
+    }
 }

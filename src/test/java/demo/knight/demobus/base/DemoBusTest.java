@@ -42,7 +42,25 @@ public class DemoBusTest {
 
         System.out.println("Unregistering this and calling a new event which should be ignored...");
 
+        System.out.println(demoBus.toString());
+
+        // remove
         demoBus.unregister(this);
+
+        System.out.println(demoBus.toString());
+
+        System.out.println(Runtime.getRuntime().freeMemory());
+
+        System.gc();
+
+        // destroy
+        demoBus.destroy(this);
+
+        System.gc();
+
+        System.out.println(Runtime.getRuntime().freeMemory());
+
+        System.out.println(demoBus.toString());
 
         // this should never be received
         demoBus.call(new DemoVent());

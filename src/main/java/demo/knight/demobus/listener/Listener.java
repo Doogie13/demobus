@@ -8,8 +8,6 @@ import demo.knight.demobus.exception.EventInvocationException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * An interface for listeners to use. This allows the event bus to work regardless of listener type.
@@ -84,4 +82,14 @@ public class Listener {
         return priority;
     }
 
+    @Override
+    public final String toString() {
+        return "Listener{" +
+                "priority=" + priority.name() +
+                ", listenToCancelled=" + listenToCancelled +
+                ", method=" + method +
+                ", methodType=" + methodType +
+                ", parent=" + parent.getClass().getSimpleName() +
+                '}';
+    }
 }
