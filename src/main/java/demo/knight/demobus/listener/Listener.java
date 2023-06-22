@@ -8,6 +8,7 @@ import demo.knight.demobus.exception.EventInvocationException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
 
 /**
  * An interface for listeners to use. This allows the event bus to work regardless of listener type.
@@ -53,8 +54,26 @@ public class Listener {
      * */
     public void handleCall(IDemoVent event) {
 
-        if (!(event.isCancelled() && !listenToCancelled) && methodType.isAssignableFrom(event.getClass()))
+        if (!(event.isCancelled() && !listenToCancelled) && methodType.isAssignableFrom(event.getClass()) && checkPrimitive(event))
             call(event);
+
+    }
+
+    private boolean checkPrimitive(IDemoVent event) {
+        // check we have matching type params
+
+        TypeVariable<? extends Class<?>>[] typeParameters = methodType.getTypeParameters();
+        TypeVariable<? extends Class<? extends IDemoVent>>[] typeParameters1 = event.getClass().getTypeParameters();
+
+        if (typeParameters.length != typeParameters1.length)
+            return false;
+        else {
+            for (int i = 0; i < typeParameters.length; i++) {
+                if (!typeParameters[i].getClass().equals(typeParameters1[i].getClass()))
+                    return false;
+            }
+        }
+        return true;
 
     }
 
